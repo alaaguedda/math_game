@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Math Game</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      margin-top: 42px;
+      background-color: #f4f4f4;
+    }
+
+    h1 {
+      color: #333;
+      
+    }
+
+    #question {
+      font-size: 24px;
+      margin-bottom: 20px;
+      margin-top: 60px;
+    }
+
+    input {
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin: 5px;
+      transition: background-color 0.3s;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #feedback {
+      font-size: 18px;
+      color: #333;
+      margin-top: 10px;
+    }
+    .button-container {
+      display: flex; /* Use flexbox */
+      justify-content: center; /* Center items horizontally */
+      margin-top: 10px; /* Add some margin */
+    }
+
+    /* Style for buttons */
+    .button-container button {
+      margin:  5px; /* Add margin between buttons */
+    }
+    #score-box {
+      position: absolute; /* Position absolute */
+      top: 93px; /* Adjusted top position */
+      left: 50%; /* Center horizontally */
+      transform: translateX(-50%); /* Center horizontally */
+      padding: 10px;
+      background-color: #8ac926; /* Updated background color */
+      border-radius: 5px;
+      color: #fff; /* Text color */
+      font-size: 20px; /* Increased font size */
+      font-weight: bold; /* Bold font */
+    }
+
+    
+  </style>
+</head>
+<body>
+  <div id="score-box"> SCORE : <span id="score">  0 </span>
+    
+  </div>
+  <h1>Math Game</h1>
+  <p id="question"></p>
+  <input type="text" id="answer" placeholder="Your Answer">
+  <div class="button-container">
+    <button onclick="checkAnswer()">Submit Answer</button>
+    <button onclick="generateQuestion()">Next Question</button>
+  </div>
+  <p id="feedback"></p>
+
+  <script>
+    var score = 0 ;
+
+    function generateQuestion() {
+      var num1 = Math.floor(Math.random() * 20) + 1;
+      var num2 = Math.floor(Math.random() * 20) + 1;
+      var operator = Math.random() < 0.5 ? '+' : '*';
+
+      // Display the question
+      document.getElementById('question').textContent = num1 + ' ' + operator + ' ' + num2;
+
+      // Store the correct answer
+      window.correctAnswer = (operator === '+') ? num1 + num2 : num1 * num2;
+
+      // Clear previous feedback
+      document.getElementById('feedback').textContent = '';
+    }
+
+    function checkAnswer() {
+      var userAnswer = parseInt(document.getElementById('answer').value, 10);
+
+      if (isNaN(userAnswer)) {
+        document.getElementById('feedback').textContent = 'Please enter a valid number.';
+      } else {
+        if (userAnswer === window.correctAnswer) {
+          score += 5;
+          generateQuestion();
+          document.getElementById('feedback').textContent = 'Correct! Well done.✅';
+        } else if (userAnswer < window.correctAnswer) {
+          document.getElementById('feedback').textContent = 'Try higher.🔼';
+          if(score >0){
+            score-=1;
+          }
+          
+        } else {
+          document.getElementById('feedback').textContent = 'Try lower.🔽';
+          if(score >0){
+            score-=1;
+          }
+          
+        }
+        updateScore();
+      }
+      
+      }
+      function updateScore(){
+        document.getElementById('score').textContent = score;
+    }
+
+    // Generate the first question on page load
+    generateQuestion();
+    updateScore();
+  </script>
+</body>
+</html>
